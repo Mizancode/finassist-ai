@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: api-gateway-service
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: risk-service
+              uri: http://localhost:8084
+              predicates:
+                - Path=/api/risk/**
+
+            - id: audit-service
+              uri: http://localhost:8085
+              predicates:
+                - Path=/api/audit/**
+
+            - id: transaction-service
+              uri: http://localhost:8082
+              predicates:
+                - Path=/api/transaction/**
+
+            - id: document-service
+              uri: http://localhost:8083
+              predicates:
+                - Path=/api/document/**
+
+server:
+  port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
